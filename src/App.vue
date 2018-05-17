@@ -11,7 +11,16 @@
         <el-button
         size="mini"
         @click="addField"
-        >Показать</el-button>
+        >Добавить</el-button>
+        <el-color-picker
+        v-model="color"
+        size="mini"></el-color-picker>
+        <FieldSettings
+        v-for="field in fields"
+        :key="field.id"
+        :field="field"
+        @change-visible="value => field.visible = value"
+        />
       </el-aside>
       <el-main class="main">
         <Map
@@ -25,6 +34,7 @@
 
 <script>
 import Map from './components/Map'
+import FieldSettings from './components/FieldSettings'
 import L from 'leaflet'
 import wktParse from 'wellknown'
 
@@ -39,13 +49,15 @@ import {
 export default {
   name: 'App',
   components: {
-    Map
+    Map,
+    FieldSettings
   },
   data () {
     return {
       fields: [],
       wktRawData: '',
-      id: 1
+      id: 1,
+      color: '#600054'
     }
   },
   computed: {
@@ -56,6 +68,12 @@ export default {
         return bounds
       }
       return L.latLngBounds(L.latLng(51.582012, 35.126900), L.latLng(49.671058, 39.537911))
+    },
+    newColor () {
+      if (this.color && this.color.length > 1) {
+        return this.color
+      }
+      return '#600054'
     }
   },
   methods: {
@@ -75,8 +93,11 @@ export default {
       }
       this.fields.push({
         id: this.id++,
-        geodata: geoJsonData
+        geodata: geoJsonData,
+        visible: true,
+        color: this.newColor
       })
+      this.wktRawData = ''
     }
   }
 }

@@ -16,7 +16,8 @@
       v-for="field in fields"
       :key="field.id"
       :geojson="field.geodata"
-      :options="getStyle('#600054')"
+      :visible="field.visible"
+      :options="getStyle(field.color)"
       ></l-geo-json>
   </l-map>
 </template>
