@@ -12,25 +12,12 @@
     :url="tileProvider.url"
     :attribution="tileProvider.attribution" />
     <l-control-scale :imperial="false" />
-    <l-geo-json v-if="!!geojsonDayTrack" :geojson="geojsonDayTrack" :options="getStyle('indigo')"></l-geo-json>
     <l-geo-json
-    v-if="!!geojsonField"
-    :geojson="geojsonField"
-    :options="getStyle('#C400AB')"
-    ></l-geo-json>
-    <l-geo-json v-if="!!geojsonTrack" :geojson="geojsonTrack" :options="getStyle('black')"></l-geo-json>
-    <l-geo-json v-if="!!geojsonShape" :geojson="geojsonShape" :options="getStyle('red')"></l-geo-json>
-    <l-geo-json v-if="!!geojsonFilteredShape" :geojson="geojsonFilteredShape" :options="getStyle('blue')"></l-geo-json>
-    <l-geo-json v-if="!!geojsonV3Shape" :geojson="geojsonV3Shape" :options="getStyle('#FFD700')"></l-geo-json>
-    <template
-    v-if="nearFields">
-      <l-geo-json
-      v-for="field in nearFields"
-      :key="field.sapId"
+      v-for="field in fields"
+      :key="field.id"
       :geojson="field.geodata"
-      :options="getStyle('#600054', field.sapId)"
+      :options="getStyle('#600054')"
       ></l-geo-json>
-    </template>
   </l-map>
 </template>
 
@@ -70,30 +57,13 @@ function getOnEachFeature (labelText) {
 
 export default {
   props: {
-    geojsonTrack: {
-      type: Object
-    },
-    geojsonShape: {
-      type: Object
-    },
-    geojsonFilteredShape: {
-      type: Object
-    },
-    geojsonV3Shape: {
-      type: Object
-    },
-    geojsonField: {
-      type: Object
-    },
-    geojsonDayTrack: {
-      type: Object
-    },
     bounds: {
       type: Object,
       required: true
     },
-    nearFields: {
-      type: Array
+    fields: {
+      type: Array,
+      required: true
     }
   },
   components: {
