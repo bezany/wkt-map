@@ -8,19 +8,16 @@
           placeholder="Введтие WKT"
           v-model="wktRawData">
         </el-input>
-        <div
-        style="display: table"
-        >
+        <div>
+          <span>Цвет полигона: </span>
           <div
-          style="display: table-cell"
+          style="display: inline-block"
           >
             <el-color-picker
             v-model="color"
             size="mini"></el-color-picker>
           </div>
-          <div
-          style="display: table-cell; position: absolute"
-          >
+          <div>
             <el-button
             size="mini"
             @click="addField"
