@@ -8,18 +8,31 @@
           placeholder="Введтие WKT"
           v-model="wktRawData">
         </el-input>
-        <el-button
-        size="mini"
-        @click="addField"
-        >Добавить</el-button>
-        <el-color-picker
-        v-model="color"
-        size="mini"></el-color-picker>
+        <div
+        style="display: table"
+        >
+          <div
+          style="display: table-cell"
+          >
+            <el-color-picker
+            v-model="color"
+            size="mini"></el-color-picker>
+          </div>
+          <div
+          style="display: table-cell; position: absolute"
+          >
+            <el-button
+            size="mini"
+            @click="addField"
+            >Добавить</el-button>
+          </div>
+        </div>
         <FieldSettings
-        v-for="field in fields"
+        v-for="(field, index) in fields"
         :key="field.id"
         :field="field"
         @change-visible="value => field.visible = value"
+        @remove="removeField(index)"
         />
       </el-aside>
       <el-main class="main">
@@ -98,6 +111,9 @@ export default {
         color: this.newColor
       })
       this.wktRawData = ''
+    },
+    removeField (index) {
+      this.fields.splice(index, 1)
     }
   }
 }
