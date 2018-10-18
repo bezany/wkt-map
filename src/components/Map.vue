@@ -2,7 +2,7 @@
   <l-map
   ref="map"
   :bounds="bounds" >
-    <l-control-layers position="topright"/>
+    <l-control-layers position="topright" :collapsed="false" />
     <l-tile-layer
     v-for="tileProvider in tileProviders"
     :key="tileProvider.name"
@@ -11,7 +11,7 @@
     :visible="tileProvider.visible"
     :url="tileProvider.url"
     :attribution="tileProvider.attribution" />
-    <l-control-scale :imperial="false" />
+    <l-control-scale :imperial="false" position="bottomright" />
     <l-geo-json
       v-for="field in fields"
       :key="field.id"
@@ -34,6 +34,7 @@ import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 import 'leaflet-measure'
 import 'leaflet-measure/dist/leaflet-measure.css'
+import 'leaflet.heat'
 
 // fix error with marker icon (webpack file loader not load this icons)
 // https://github.com/KoRiGaN/Vue2Leaflet/issues/96#issuecomment-341453050
@@ -76,6 +77,9 @@ export default {
     fields: {
       type: Array,
       required: true
+    },
+    heatMap: {
+      type: Array
     }
   },
   components: {
@@ -130,7 +134,16 @@ export default {
         position: 'bottomleft'
       })
       measureControl.addTo(this.$refs.map.mapObject)
+
+      this.heat = L.heatLayer([], {radius: 20})
+      this.heat.addTo(this.$refs.map.mapObject)
     })
+  },
+  watch: {
+    heatMap (newVal) {
+      newVal = newVal || []
+      this.heat.setLatLngs(newVal)
+    }
   }
 }
 </script>

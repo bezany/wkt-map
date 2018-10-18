@@ -36,6 +36,9 @@
             @click="addGeoJSON"
             >Добавить GeoJSON</el-button>
         </div>
+        <div>
+          <input type="file" @change="processFile($event)">
+        </div>
         <FieldSettings
         v-for="(field, index) in fields"
         :key="field.id"
@@ -48,6 +51,7 @@
         <Map
         :bounds="mapBounds"
         :fields="fields"
+        :heatMap="heatMap"
         style="height: 100%; width: 100%;"
         /></el-main>
     </el-container>
@@ -80,7 +84,8 @@ export default {
       wktRawData: '',
       id: 1,
       color: '#600054',
-      geoJsonRawData: ''
+      geoJsonRawData: '',
+      heatMap: null
     }
   },
   computed: {
@@ -149,6 +154,33 @@ export default {
     },
     removeField (index) {
       this.fields.splice(index, 1)
+    },
+    processFile (event) {
+      const input = event.target
+      const reader = new FileReader()
+      reader.onload = () => {
+        const text = reader.result
+        this.tryAddHeatMap(text)
+      }
+      reader.readAsText(input.files[0])
+    },
+    tryAddHeatMap (jsonAsText) {
+      if (!jsonAsText) {
+        this.$notify.error({
+          message: 'Файл пуст!'
+        })
+        return
+      }
+      let jsonParsed = null
+      try {
+        jsonParsed = JSON.parse(jsonAsText)
+      } catch (e) {
+        this.$notify.error({
+          message: 'JSON в файле не корректен!'
+        })
+        return
+      }
+      this.heatMap = jsonParsed
     }
   }
 }
