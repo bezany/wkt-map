@@ -17,7 +17,7 @@
       :key="field.id"
       :geojson="field.geodata"
       :visible="field.visible"
-      :options="getStyle(field.color)"
+      :options="(field.source === 'geojson') ? geoJsonOptions : getStyle(field.color)"
       ></l-geo-json>
   </l-map>
 </template>
@@ -34,6 +34,17 @@ import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 import 'leaflet-measure'
 import 'leaflet-measure/dist/leaflet-measure.css'
+
+// fix error with marker icon (webpack file loader not load this icons)
+// https://github.com/KoRiGaN/Vue2Leaflet/issues/96#issuecomment-341453050
+// https://github.com/KoRiGaN/Vue2Leaflet/blob/bd7709d3b7929f4306e279ce5c5e709d8f49e48a/examples/src/main.js
+delete L.Icon.Default.prototype._getIconUrl
+
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+  iconUrl: require('leaflet/dist/images/marker-icon.png'),
+  shadowUrl: require('leaflet/dist/images/marker-shadow.png')
+})
 
 const tileProviders = [
   {
@@ -79,6 +90,24 @@ export default {
       tileProviders: tileProviders
     }
   },
+  computed: {
+    geoJsonOptions () {
+      return {
+        style (feature) {
+          const res = {}
+          if (feature.properties && feature.properties.color) {
+            res.color = feature.properties.color
+          }
+          return res
+        },
+        onEachFeature (feature, layer) {
+          if (feature.properties && feature.properties.imei_count) {
+            layer.bindTooltip(feature.properties.imei_count.toString(), {permanent: true, opacity: 0.7, direction: 'center'})
+          }
+        }
+      }
+    }
+  },
   methods: {
     getStyle (color, labelText) {
       return {
@@ -90,21 +119,18 @@ export default {
     }
   },
   mounted () {
-    const measureControl = new L.Control.Measure({
-      primaryLengthUnit: 'meters',
-      secondaryLengthUnit: 'kilometers',
-      primaryAreaUnit: 'sqmeters',
-      secondaryAreaUnit: 'hectares',
-      decPoint: ',',
-      thousandsSep: '',
-      position: 'bottomleft'
+    this.$nextTick(() => {
+      const measureControl = new L.Control.Measure({
+        primaryLengthUnit: 'meters',
+        secondaryLengthUnit: 'kilometers',
+        primaryAreaUnit: 'sqmeters',
+        secondaryAreaUnit: 'hectares',
+        decPoint: ',',
+        thousandsSep: '',
+        position: 'bottomleft'
+      })
+      measureControl.addTo(this.$refs.map.mapObject)
     })
-    measureControl.addTo(this.$refs.map.mapObject)
   }
 }
-
 </script>
-
-<style>
-
-</style>

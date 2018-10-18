@@ -24,6 +24,18 @@
             >Добавить</el-button>
           </div>
         </div>
+        <div>
+          <el-input
+          type="textarea"
+          :autosize="{ minRows: 2, maxRows: 4}"
+          placeholder="Введтие GeoJSON"
+          v-model="geoJsonRawData">
+          </el-input>
+          <el-button
+            size="mini"
+            @click="addGeoJSON"
+            >Добавить GeoJSON</el-button>
+        </div>
         <FieldSettings
         v-for="(field, index) in fields"
         :key="field.id"
@@ -67,7 +79,8 @@ export default {
       fields: [],
       wktRawData: '',
       id: 1,
-      color: '#600054'
+      color: '#600054',
+      geoJsonRawData: ''
     }
   },
   computed: {
@@ -108,6 +121,31 @@ export default {
         color: this.newColor
       })
       this.wktRawData = ''
+    },
+    addGeoJSON () {
+      if (!this.geoJsonRawData) {
+        this.$notify.error({
+          message: 'Введите GeoJSON!'
+        })
+        return
+      }
+      let geosJsonParsed = null
+      try {
+        geosJsonParsed = JSON.parse(this.geoJsonRawData)
+      } catch (e) {
+        this.$notify.error({
+          message: 'GeoJSON не корректен!'
+        })
+        return
+      }
+      this.fields.push({
+        id: this.id++,
+        geodata: geosJsonParsed,
+        visible: true,
+        color: 'white',
+        source: 'geojson'
+      })
+      this.geoJsonRawData = ''
     },
     removeField (index) {
       this.fields.splice(index, 1)
