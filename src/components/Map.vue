@@ -105,8 +105,11 @@ export default {
             color: 'gray',
             fillOpacity: 1
           }
-          if (feature.properties && feature.properties.msg_count && feature.properties.all_msgs) {
-            res.color = palletteFunc(feature.properties.msg_count / feature.properties.all_msgs)
+          const percentProblem = feature.properties.msg_count / feature.properties.all_msgs
+          if (Number.isFinite(percentProblem)) {
+            res.color = palletteFunc(percentProblem)
+          } else if (feature.properties.color) {
+            res.color = feature.properties.color
           }
           return res
         },

@@ -33,16 +33,16 @@
           </el-input>
           <el-button
             size="mini"
-            @click="addGeoJSON"
+            @click="() => addGeoJSON()"
             >Добавить GeoJSON</el-button>
         </div>
         <div>
           <div>Файл с точками для HeatMap</div>
-          <input type="file" @change="processFile($event)">
+          <input type="file" @change="processFile($event, tryAddHeatMap)">
         </div>
         <div>
           <div>Файл с GeoJSON</div>
-          <input type="file" @change="processFileGeoJSON($event)">
+          <input type="file" @change="processFile($event, addGeoJSON)">
         </div>
         <FieldSettings
         v-for="(field, index) in fields"
@@ -132,8 +132,9 @@ export default {
       })
       this.wktRawData = ''
     },
-    addGeoJSON () {
-      if (!this.geoJsonRawData) {
+    addGeoJSON (text) {
+      const geoJsonRawData = text || this.geoJsonRawData
+      if (!geoJsonRawData) {
         this.$notify.error({
           message: 'Введите GeoJSON!'
         })
@@ -141,7 +142,7 @@ export default {
       }
       let geosJsonParsed = null
       try {
-        geosJsonParsed = JSON.parse(this.geoJsonRawData)
+        geosJsonParsed = JSON.parse(geoJsonRawData)
       } catch (e) {
         this.$notify.error({
           message: 'GeoJSON не корректен!'
@@ -160,27 +161,18 @@ export default {
     removeField (index) {
       this.fields.splice(index, 1)
     },
-    processFileGeoJSON (event) {
+    processFile (event, callback) {
       const input = event.target
       const reader = new FileReader()
       reader.onload = () => {
         const text = reader.result
-        this.fields.push({
-          id: this.id++,
-          geodata: JSON.parse(text),
-          visible: true,
-          color: 'white',
-          source: 'geojson'
-        })
-      }
-      reader.readAsText(input.files[0])
-    },
-    processFile (event) {
-      const input = event.target
-      const reader = new FileReader()
-      reader.onload = () => {
-        const text = reader.result
-        this.tryAddHeatMap(text)
+        if (!text) {
+          this.$notify.error({
+            message: 'Файл пуст!'
+          })
+          return
+        }
+        callback(text)
       }
       reader.readAsText(input.files[0])
     },
