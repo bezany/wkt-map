@@ -37,7 +37,12 @@
             >Добавить GeoJSON</el-button>
         </div>
         <div>
+          <div>Файл с точками для HeatMap</div>
           <input type="file" @change="processFile($event)">
+        </div>
+        <div>
+          <div>Файл с GeoJSON</div>
+          <input type="file" @change="processFileGeoJSON($event)">
         </div>
         <FieldSettings
         v-for="(field, index) in fields"
@@ -154,6 +159,21 @@ export default {
     },
     removeField (index) {
       this.fields.splice(index, 1)
+    },
+    processFileGeoJSON (event) {
+      const input = event.target
+      const reader = new FileReader()
+      reader.onload = () => {
+        const text = reader.result
+        this.fields.push({
+          id: this.id++,
+          geodata: JSON.parse(text),
+          visible: true,
+          color: 'white',
+          source: 'geojson'
+        })
+      }
+      reader.readAsText(input.files[0])
     },
     processFile (event) {
       const input = event.target

@@ -35,6 +35,9 @@ import L from 'leaflet'
 import 'leaflet-measure'
 import 'leaflet-measure/dist/leaflet-measure.css'
 import 'leaflet.heat'
+import chroma from 'chroma-js'
+
+const palletteFunc = chroma.scale(['green', 'red'])
 
 // fix error with marker icon (webpack file loader not load this icons)
 // https://github.com/KoRiGaN/Vue2Leaflet/issues/96#issuecomment-341453050
@@ -98,15 +101,30 @@ export default {
     geoJsonOptions () {
       return {
         style (feature) {
-          const res = {}
-          if (feature.properties && feature.properties.color) {
-            res.color = feature.properties.color
+          const res = {
+            color: 'gray',
+            fillOpacity: 1
+          }
+          if (feature.properties && feature.properties.msg_count && feature.properties.all_msgs) {
+            res.color = palletteFunc(feature.properties.msg_count / feature.properties.all_msgs)
           }
           return res
         },
         onEachFeature (feature, layer) {
-          if (feature.properties && feature.properties.imei_count) {
-            layer.bindTooltip(feature.properties.imei_count.toString(), {permanent: true, opacity: 0.7, direction: 'center'})
+          /*
+          "properties": {
+              "color": "yellow",
+              "msg_count": 4,
+              "imei_count": 2,
+              "all_msgs": 493
+            }
+          */
+          if (feature.properties) {
+            const msg = `imei_count: ${feature.properties.imei_count}<br/>
+            msg_count: ${feature.properties.msg_count}<br/>
+            all_msgs: ${feature.properties.all_msgs}<br/>
+            `
+            layer.bindTooltip(msg)
           }
         }
       }
