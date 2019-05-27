@@ -9,8 +9,7 @@
     "start": "npm run dev",
     "lint": "eslint --ext .js,.vue src",
     "build": "node build/build.js",
-    "pages": "npm run build && rimraf docs/ && ncp dist/ docs/",
-    "pages2": "rimraf docs/ && ncp dist/ docs/"
+    "pages": "npm run build && rimraf docs/ && ncp dist/ docs/"
   },
   "dependencies": {
     "chroma-js": "^1.4.1",
