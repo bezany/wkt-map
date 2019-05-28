@@ -34,7 +34,6 @@ import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 import 'leaflet-measure'
 import 'leaflet-measure/dist/leaflet-measure.css'
-import 'leaflet.heat'
 import chroma from 'chroma-js'
 
 const palletteFunc = chroma.scale(['green', 'red'])
@@ -80,9 +79,6 @@ export default {
     fields: {
       type: Array,
       required: true
-    },
-    heatMap: {
-      type: Array
     }
   },
   components: {
@@ -155,16 +151,7 @@ export default {
         position: 'bottomleft'
       })
       measureControl.addTo(this.$refs.map.mapObject)
-
-      this.heat = L.heatLayer([], {radius: 20})
-      this.heat.addTo(this.$refs.map.mapObject)
     })
-  },
-  watch: {
-    heatMap (newVal) {
-      newVal = newVal || []
-      this.heat.setLatLngs(newVal)
-    }
   }
 }
 </script>
