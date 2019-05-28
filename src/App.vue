@@ -38,7 +38,9 @@
         </div>
         <div>
           <div>Файл с GeoJSON</div>
-          <input type="file" @change="processFile($event, addGeoJSON)">
+          <FileAdded
+          @fileAdded="fileAdded"
+          />
         </div>
         <FieldSettings
         v-for="(field, index) in fields"
@@ -63,7 +65,7 @@ import Map from './components/Map'
 import FieldSettings from './components/FieldSettings'
 import L from 'leaflet'
 import wktParse from 'wellknown'
-
+import FileAdded from './components/FileAdded'
 /*
 import {
   mapState,
@@ -76,7 +78,8 @@ export default {
   name: 'App',
   components: {
     Map,
-    FieldSettings
+    FieldSettings,
+    FileAdded
   },
   data () {
     return {
@@ -155,20 +158,14 @@ export default {
     removeField (index) {
       this.fields.splice(index, 1)
     },
-    processFile (event, callback) {
-      const input = event.target
-      const reader = new FileReader()
-      reader.onload = () => {
-        const text = reader.result
-        if (!text) {
-          this.$notify.error({
-            message: 'Файл пуст!'
-          })
-          return
-        }
-        callback(text)
+    fileAdded (text) {
+      if (!text) {
+        this.$notify.error({
+          message: 'Файл пуст!'
+        })
+        return
       }
-      reader.readAsText(input.files[0])
+      this.addGeoJSON(text)
     }
   }
 }
