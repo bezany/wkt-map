@@ -1,14 +1,14 @@
 <template>
   <div>
     <hr/>
-    {{field.id}}
+    {{geometry.id}}
     <div
     class="color-box"
-    :style="{ 'background-color': field.color }"
+    :style="{ 'background-color': geometry.color }"
     >
     </div>
     <el-checkbox
-    :value="field.visible"
+    :value="geometry.visible"
     @change="(value) => $emit('change-visible', value)"
     >Показывать</el-checkbox>
     <el-button
@@ -23,7 +23,7 @@
 <script>
 export default {
   props: {
-    field: {
+    geometry: {
       type: Object,
       required: true
     }
@@ -36,7 +36,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   .color-box {
     width: 13px;
     height: 13px;

@@ -42,10 +42,10 @@
           @fileAdded="fileAdded"
           />
         </div>
-        <FieldSettings
+        <GeometrySettings
         v-for="(field, index) in fields"
         :key="field.id"
-        :field="field"
+        :geometry="field"
         @change-visible="value => field.visible = value"
         @remove="removeField(index)"
         />
@@ -62,7 +62,7 @@
 
 <script>
 import Map from './components/Map'
-import FieldSettings from './components/FieldSettings'
+import GeometrySettings from './components/GeometrySettings'
 import L from 'leaflet'
 import wktParse from 'wellknown'
 import FileAdded from './components/FileAdded'
@@ -78,7 +78,7 @@ export default {
   name: 'App',
   components: {
     Map,
-    FieldSettings,
+    GeometrySettings,
     FileAdded
   },
   data () {
