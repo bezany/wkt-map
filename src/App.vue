@@ -53,7 +53,7 @@
       <el-main class="main">
         <Map
         :bounds="mapBounds"
-        :fields="fields"
+        :geometries="fields"
         style="height: 100%; width: 100%;"
         /></el-main>
     </el-container>

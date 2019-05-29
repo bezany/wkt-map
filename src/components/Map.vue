@@ -13,11 +13,11 @@
     :attribution="tileProvider.attribution" />
     <l-control-scale :imperial="false" position="bottomright" />
     <l-geo-json
-      v-for="field in fields"
-      :key="field.id"
-      :geojson="field.geodata"
-      :visible="field.visible"
-      :options="(field.source === 'geojson') ? geoJsonOptions : getStyle(field.color)"
+      v-for="geometry in geometries"
+      :key="geometry.id"
+      :geojson="geometry.geodata"
+      :visible="geometry.visible"
+      :options="(geometry.source === 'geojson') ? geoJsonOptions : getStyle(geometry.color)"
       ></l-geo-json>
   </l-map>
 </template>
@@ -76,7 +76,7 @@ export default {
       type: Object,
       required: true
     },
-    fields: {
+    geometries: {
       type: Array,
       required: true
     }
