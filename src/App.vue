@@ -66,14 +66,7 @@ import GeometrySettings from './components/GeometrySettings'
 import L from 'leaflet'
 import wktParse from 'wellknown'
 import FileAdded from './components/FileAdded'
-/*
-import {
-  mapState,
-  mapActions,
-  mapMutations,
-  mapGetters
-} from 'vuex'
-*/
+
 export default {
   name: 'App',
   components: {
