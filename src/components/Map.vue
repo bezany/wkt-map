@@ -141,7 +141,7 @@ export default {
   },
   mounted () {
     this.$nextTick(() => {
-      const measureControl = new L.Control.Measure({
+      this.measureControl = new L.Control.Measure({
         primaryLengthUnit: 'meters',
         secondaryLengthUnit: 'kilometers',
         primaryAreaUnit: 'sqmeters',
@@ -149,9 +149,13 @@ export default {
         decPoint: ',',
         thousandsSep: '',
         position: 'bottomleft'
-      })
-      measureControl.addTo(this.$refs.map.mapObject)
+      }).addTo(this.$refs.map.mapObject)
     })
+  },
+  beforeDestroy () {
+    if (this.measureControl) {
+      this.measureControl.remove()
+    }
   }
 }
 </script>
