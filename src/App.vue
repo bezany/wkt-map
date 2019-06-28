@@ -9,7 +9,7 @@
           v-model="wktRawData">
         </el-input>
         <div>
-          <span>Цвет полигона: </span>
+          <span>{{$t('polygon_color')}}: </span>
           <div
           style="display: inline-block"
           >
@@ -49,6 +49,7 @@
         @change-visible="value => field.visible = value"
         @remove="removeField(index)"
         />
+        <Langselect />
       </el-aside>
       <el-main class="main">
         <Map
@@ -66,13 +67,15 @@ import GeometrySettings from './components/GeometrySettings'
 import L from 'leaflet'
 import wktParse from 'wellknown'
 import FileAdded from './components/FileAdded'
+import Langselect from './components/Langselect'
 
 export default {
   name: 'App',
   components: {
     Map,
     GeometrySettings,
-    FileAdded
+    FileAdded,
+    Langselect
   },
   data () {
     return {
