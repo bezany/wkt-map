@@ -17,7 +17,7 @@
       :key="geometry.id"
       :geojson="geometry.geodata"
       :visible="geometry.visible"
-      :options="(geometry.source === 'geojson') ? geoJsonOptions : getStyle(geometry.color)"
+      :options="getStyle(geometry.color)"
       ></l-geo-json>
   </l-map>
 </template>
@@ -34,9 +34,6 @@ import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 import 'leaflet-measure'
 import 'leaflet-measure/dist/leaflet-measure.css'
-import chroma from 'chroma-js'
-
-const palletteFunc = chroma.scale(['green', 'red'])
 
 // fix error with marker icon (webpack file loader not load this icons)
 // https://github.com/KoRiGaN/Vue2Leaflet/issues/96#issuecomment-341453050
@@ -91,42 +88,6 @@ export default {
   data () {
     return {
       tileProviders: tileProviders
-    }
-  },
-  computed: {
-    geoJsonOptions () {
-      return {
-        style (feature) {
-          const res = {
-            color: 'gray',
-            fillOpacity: 1
-          }
-          const percentProblem = feature.properties.msg_count / feature.properties.all_msgs
-          if (Number.isFinite(percentProblem)) {
-            res.color = palletteFunc(percentProblem)
-          } else if (feature.properties.color) {
-            res.color = feature.properties.color
-          }
-          return res
-        },
-        onEachFeature (feature, layer) {
-          /*
-          "properties": {
-              "color": "yellow",
-              "msg_count": 4,
-              "imei_count": 2,
-              "all_msgs": 493
-            }
-          */
-          if (feature.properties) {
-            const msg = `imei_count: ${feature.properties.imei_count}<br/>
-            msg_count: ${feature.properties.msg_count}<br/>
-            all_msgs: ${feature.properties.all_msgs}<br/>
-            `
-            layer.bindTooltip(msg)
-          }
-        }
-      }
     }
   },
   methods: {

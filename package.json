@@ -12,7 +12,6 @@
     "pages": "npm run build && rimraf docs/ && ncp dist/ docs/"
   },
   "dependencies": {
-    "chroma-js": "^1.4.1",
     "element-ui": "^2.8.2",
     "leaflet": "^1.5.1",
     "leaflet-measure": "^3.1.0",
