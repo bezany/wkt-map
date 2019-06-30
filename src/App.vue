@@ -2,46 +2,9 @@
   <div id="app" style="height: 100%; width: 100%;">
     <el-container style="height: 100%; width: 100%;">
       <el-aside class="aside" width="200px">
-        <el-input
-          type="textarea"
-          :autosize="{ minRows: 2, maxRows: 4}"
-          placeholder="Введтие WKT"
-          v-model="wktRawData">
-        </el-input>
-        <div>
-          <span>{{$t('polygon_color')}}: </span>
-          <div
-          style="display: inline-block"
-          >
-            <el-color-picker
-            v-model="color"
-            size="mini"></el-color-picker>
-          </div>
-          <div>
-            <el-button
-            size="mini"
-            @click="addField"
-            >Добавить</el-button>
-          </div>
-        </div>
-        <div>
-          <el-input
-          type="textarea"
-          :autosize="{ minRows: 2, maxRows: 4}"
-          placeholder="Введтие GeoJSON"
-          v-model="geoJsonRawData">
-          </el-input>
-          <el-button
-            size="mini"
-            @click="() => addGeoJSON()"
-            >Добавить GeoJSON</el-button>
-        </div>
-        <div>
-          <div>Файл с GeoJSON</div>
-          <FileAdded
-          @fileAdded="fileAdded"
-          />
-        </div>
+        <GeometryInput
+        @add="addGeometry"
+        />
         <GeometrySettings
         v-for="(field, index) in fields"
         :key="field.id"
@@ -49,7 +12,7 @@
         @change-visible="value => field.visible = value"
         @remove="removeField(index)"
         />
-        <Langselect />
+        <LangSelect />
       </el-aside>
       <el-main class="main">
         <Map
@@ -65,25 +28,23 @@
 import Map from './components/Map'
 import GeometrySettings from './components/GeometrySettings'
 import L from 'leaflet'
-import wktParse from 'wellknown'
-import FileAdded from './components/FileAdded'
-import Langselect from './components/Langselect'
+import LangSelect from './components/LangSelect'
+import GeometryInput from './components/GeometryInput'
 
 export default {
   name: 'App',
   components: {
     Map,
     GeometrySettings,
-    FileAdded,
-    Langselect
+    LangSelect,
+    GeometryInput
   },
   data () {
     return {
       fields: [],
       wktRawData: '',
-      id: 1,
-      color: '#600054',
-      geoJsonRawData: ''
+      geoJsonRawData: '',
+      id: 1
     }
   },
   computed: {
@@ -94,74 +55,18 @@ export default {
         return bounds
       }
       return L.latLngBounds(L.latLng(51.582012, 35.126900), L.latLng(49.671058, 39.537911))
-    },
-    newColor () {
-      if (this.color && this.color.length > 1) {
-        return this.color
-      }
-      return '#600054'
     }
   },
   methods: {
-    addField () {
-      if (!this.wktRawData) {
-        this.$notify.error({
-          message: 'Введите WKT!'
-        })
-        return
-      }
-      const geoJsonData = wktParse(this.wktRawData)
-      if (!geoJsonData) {
-        this.$notify.error({
-          message: 'Ошибка парсинга WKT!'
-        })
-        return
-      }
+    addGeometry (geometry) {
       this.fields.push({
+        ...geometry,
         id: this.id++,
-        geodata: geoJsonData,
-        visible: true,
-        color: this.newColor
+        visible: true
       })
-      this.wktRawData = ''
-    },
-    addGeoJSON (text) {
-      const geoJsonRawData = text || this.geoJsonRawData
-      if (!geoJsonRawData) {
-        this.$notify.error({
-          message: 'Введите GeoJSON!'
-        })
-        return
-      }
-      let geosJsonParsed = null
-      try {
-        geosJsonParsed = JSON.parse(geoJsonRawData)
-      } catch (e) {
-        this.$notify.error({
-          message: 'GeoJSON не корректен!'
-        })
-        return
-      }
-      this.fields.push({
-        id: this.id++,
-        geodata: geosJsonParsed,
-        visible: true,
-        color: 'white',
-        source: 'geojson'
-      })
-      this.geoJsonRawData = ''
     },
     removeField (index) {
       this.fields.splice(index, 1)
-    },
-    fileAdded (text) {
-      if (!text) {
-        this.$notify.error({
-          message: 'Файл пуст!'
-        })
-        return
-      }
-      this.addGeoJSON(text)
     }
   }
 }
