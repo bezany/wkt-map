@@ -16,6 +16,10 @@
     icon="el-icon-delete"
     @click="() => $emit('remove')"
     >{{$t('remove')}}</el-button>
+    <el-button
+    icon="el-icon-location-outline"
+    @click="() => $emit('location')"
+    ></el-button>
   </div>
 </template>
 

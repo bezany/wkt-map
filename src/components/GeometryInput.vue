@@ -27,6 +27,14 @@
         @click="addFromTextInput"
         >{{$t('add')}}</el-button>
       </div>
+      <div
+      style="margin-left: 5px;"
+      >
+        <el-button
+        icon="el-icon-location-outline"
+        @click="() => $emit('location')"
+        ></el-button>
+      </div>
     </div>
   </div>
 </template>

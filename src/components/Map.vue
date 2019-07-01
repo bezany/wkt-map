@@ -1,7 +1,7 @@
 <template>
   <l-map
   ref="map"
-  :bounds="bounds" >
+  :bounds="initBounds" >
     <l-control-layers position="topright" :collapsed="false" />
     <l-tile-layer
     v-for="tileProvider in tileProviders"
@@ -69,7 +69,7 @@ function getOnEachFeature (labelText) {
 
 export default {
   props: {
-    bounds: {
+    initBounds: {
       type: Object,
       required: true
     },
@@ -98,6 +98,10 @@ export default {
         },
         onEachFeature: labelText ? getOnEachFeature(labelText) : undefined
       }
+    },
+    setBounds (bounds) {
+      // this.$refs.map.setBounds(bounds) // not use, LMap not update bounds if lastSetBounds same. need .sync for bounds or direct use fitBounds
+      this.$refs.map.mapObject.fitBounds(bounds)
     }
   },
   mounted () {

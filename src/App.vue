@@ -6,6 +6,7 @@
           <h3>{{$t('title')}}</h3>
           <GeometryInput
           @add="addGeometry"
+          @location="setBounds({ bounds: allBounds })"
           />
           <GeometrySettings
           v-for="(field, index) in fields"
@@ -13,6 +14,7 @@
           :geometry="field"
           @change-visible="value => field.visible = value"
           @remove="removeField(index)"
+          @location="setBounds(field)"
           />
         </div>
         <div>
@@ -22,9 +24,10 @@
       </el-aside>
       <el-main class="main">
         <Map
-        :bounds="mapBounds"
+        :initBounds="defaultBounds"
         :geometries="fields"
         style="height: 100%; width: 100%;"
+        ref="map"
         /></el-main>
     </el-container>
   </div>
@@ -36,6 +39,8 @@ import GeometrySettings from './components/GeometrySettings'
 import L from 'leaflet'
 import LangSelect from './components/LangSelect'
 import GeometryInput from './components/GeometryInput'
+
+const defaultBounds = L.latLngBounds(L.latLng(51.582012, 35.126900), L.latLng(49.671058, 39.537911))
 
 export default {
   name: 'App',
@@ -50,17 +55,22 @@ export default {
       fields: [],
       wktRawData: '',
       geoJsonRawData: '',
-      id: 1
+      id: 1,
+      defaultBounds
     }
   },
   computed: {
-    mapBounds () {
+    allBounds () {
       if (this.fields.length > 0) {
-        const geojsonLayer = L.geoJSON(this.fields[this.fields.length - 1].geodata)
-        const bounds = geojsonLayer.getBounds()
-        return bounds
+        const result = this.fields.reduce(
+          (accumulator, currentValue) => accumulator.extend(currentValue.bounds),
+          new L.LatLngBounds()) // start with new latLngBounds for avoid mutation data
+        if (!result.isValid()) {
+          return defaultBounds
+        }
+        return result
       }
-      return L.latLngBounds(L.latLng(51.582012, 35.126900), L.latLng(49.671058, 39.537911))
+      return defaultBounds
     }
   },
   methods: {
@@ -68,11 +78,18 @@ export default {
       this.fields.push({
         ...geometry,
         id: this.id++,
-        visible: true
+        visible: true,
+        bounds: L.geoJSON(geometry.geodata).getBounds()
+      })
+      this.$nextTick(() => {
+        this.$refs.map.setBounds(this.allBounds)
       })
     },
     removeField (index) {
       this.fields.splice(index, 1)
+    },
+    setBounds (field) {
+      this.$refs.map.setBounds(field.bounds)
     }
   }
 }
