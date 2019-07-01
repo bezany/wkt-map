@@ -1,7 +1,6 @@
 <template>
   <el-dropdown trigger="click" @command="handleSetLanguage">
     <el-button
-    size="mini"
     >
       {{ language }}<i class="el-icon-arrow-down el-icon--right"></i>
     </el-button>

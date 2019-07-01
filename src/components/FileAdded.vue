@@ -2,7 +2,7 @@
   <el-upload
   action=""
   :before-upload="handleUpload">
-    <el-button size="small" type="primary">{{$t('loadFile')}}</el-button>
+    <el-button type="primary">{{$t('loadFile')}}</el-button>
   </el-upload>
 </template>
 

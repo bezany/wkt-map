@@ -17,7 +17,7 @@
         </div>
         <div>
           <LangSelect />
-          <el-link href="https://github.com/bezany/wkt-map" target="_blank">source</el-link>
+          <el-link href="https://github.com/bezany/wkt-map" target="_blank">github source</el-link>
         </div>
       </el-aside>
       <el-main class="main">

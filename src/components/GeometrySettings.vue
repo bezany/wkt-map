@@ -14,7 +14,6 @@
     <el-button
     type="info"
     icon="el-icon-delete"
-    size="mini"
     @click="() => $emit('remove')"
     >{{$t('remove')}}</el-button>
   </div>

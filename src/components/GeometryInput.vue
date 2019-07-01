@@ -1,15 +1,5 @@
 <template>
-  <div>
-    <div>
-      <span>{{$t('polygon_color')}}: </span>
-      <div
-      style="display: inline-block"
-      >
-        <el-color-picker
-        v-model="color"
-        size="mini"></el-color-picker>
-      </div>
-    </div>
+  <div class="column">
     <div>
       <FileAdded
       @fileAdded="fileAdded"
@@ -23,11 +13,20 @@
       v-model="textInput">
       </el-input>
     </div>
-    <div>
-      <el-button
-      size="mini"
-      @click="addFromTextInput"
-      >{{$t('add')}}</el-button>
+    <div class="row">
+      <div>
+        <el-color-picker
+        :title="$t('polygon_color')"
+        v-model="color"></el-color-picker>
+      </div>
+      <div
+      style="margin-left: 5px;"
+      >
+        <el-button
+        type="primary"
+        @click="addFromTextInput"
+        >{{$t('add')}}</el-button>
+      </div>
     </div>
   </div>
 </template>
@@ -99,3 +98,13 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.row {
+  display: flex;
+}
+
+.column > div:not(:last-child) {
+  margin-bottom: 5px;
+}
+</style>

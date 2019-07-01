@@ -12,7 +12,8 @@ import {
 
 Vue.use(VueI18n)
 Vue.use(ElementUI, {
-  locale: ElementUILocaleRu
+  locale: ElementUILocaleRu,
+  size: 'mini'
 })
 
 const possibleLangs = Object.keys(messages)
