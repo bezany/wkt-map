@@ -3,7 +3,6 @@
   action=""
   :before-upload="handleUpload">
     <el-button size="small" type="primary">Загрузить из файла</el-button>
-    <div slot="tip">GeoJSON</div>
   </el-upload>
 </template>
 

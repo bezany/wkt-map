@@ -11,7 +11,6 @@
       </div>
     </div>
     <div>
-      <div>Файл с GeoJSON</div>
       <FileAdded
       @fileAdded="fileAdded"
       />

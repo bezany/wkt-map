@@ -2,16 +2,19 @@
   <div id="app" style="height: 100%; width: 100%;">
     <el-container style="height: 100%; width: 100%;">
       <el-aside class="aside" width="200px">
-        <GeometryInput
-        @add="addGeometry"
-        />
-        <GeometrySettings
-        v-for="(field, index) in fields"
-        :key="field.id"
-        :geometry="field"
-        @change-visible="value => field.visible = value"
-        @remove="removeField(index)"
-        />
+        <div>
+          <h3>WKT & GeoJSON Viewer</h3>
+          <GeometryInput
+          @add="addGeometry"
+          />
+          <GeometrySettings
+          v-for="(field, index) in fields"
+          :key="field.id"
+          :geometry="field"
+          @change-visible="value => field.visible = value"
+          @remove="removeField(index)"
+          />
+        </div>
         <LangSelect />
       </el-aside>
       <el-main class="main">
@@ -95,6 +98,9 @@ main.main {
 
 .aside {
   padding: 5px;
-  font-size: 14px
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 </style>
