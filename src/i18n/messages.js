@@ -10,7 +10,10 @@ const messages = {
     notifyEmptyData: 'Enter data!',
     notifyFileEmpty: 'File empty!',
     notifyParseError: 'Parse error! Require WKT or GeoJSON.',
-    title: 'WKT & GeoJSON Viewer'
+    title: 'WKT & GeoJSON Viewer',
+    center: 'Center',
+    centerAll: 'Center All',
+    rawData: 'Source data'
   },
   ru: {
     polygon_color: 'Цвет полигона',
@@ -23,7 +26,10 @@ const messages = {
     notifyEmptyData: 'Введите данные!',
     notifyFileEmpty: 'Файл пуст!',
     notifyParseError: 'Ошибка парсинга! Требуется формат WKT или GeoJSON.',
-    title: 'Просмотр WKT & GeoJSON'
+    title: 'Просмотр WKT & GeoJSON',
+    center: 'Центрировать',
+    centerAll: 'Центрировать всё',
+    rawData: 'Исходные данные'
   }
 }
 

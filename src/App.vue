@@ -5,6 +5,7 @@
         <div>
           <h3>{{$t('title')}}</h3>
           <GeometryInput
+          ref="geometryInput"
           @add="addGeometry"
           @location="setBounds({ bounds: allBounds })"
           />
@@ -91,6 +92,11 @@ export default {
     setBounds (field) {
       this.$refs.map.setBounds(field.bounds)
     }
+  },
+  mounted () {
+    const letterH = 'POLYGON ((20 10, 20 50, 30 50, 30 35, 40 35, 40 50, 50 50, 50 10, 40 10, 40 25, 30 25, 30 10, 20 10))'
+    const letterI = 'POLYGON ((70 10, 70 50, 80 50, 80 10, 70 10))'
+    this.$refs.geometryInput.add(`GEOMETRYCOLLECTION(${letterH}, ${letterI})`)
   }
 }
 </script>

@@ -11,15 +11,33 @@
     :value="geometry.visible"
     @change="(value) => $emit('change-visible', value)"
     >{{$t('visible')}}</el-checkbox>
-    <el-button
-    type="info"
-    icon="el-icon-delete"
-    @click="() => $emit('remove')"
-    >{{$t('remove')}}</el-button>
-    <el-button
-    icon="el-icon-location-outline"
-    @click="() => $emit('location')"
-    ></el-button>
+    <div>
+      <el-button
+      type="info"
+      icon="el-icon-delete"
+      @click="() => $emit('remove')"
+      :title="$t('remove')"
+      ></el-button>
+      <el-button
+      icon="el-icon-location-outline"
+      @click="() => $emit('location')"
+      :title="$t('center')"
+      ></el-button>
+      <el-popover
+      placement="right"
+      :title="geometry.type"
+      trigger="click"
+      >
+        <el-button
+        icon="el-icon-document"
+        slot="reference"
+        :title="$t('rawData')"
+        ></el-button>
+        <div
+        class="raw-viewer"
+        >{{ geometry.rawData }}</div>
+      </el-popover>
+    </div>
   </div>
 </template>
 
@@ -44,5 +62,10 @@ export default {
     width: 13px;
     height: 13px;
     display: inline-block;
+  }
+
+  .raw-viewer {
+    max-width: 512px;
+    word-break: break-word;
   }
 </style>

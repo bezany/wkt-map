@@ -33,6 +33,7 @@
         <el-button
         icon="el-icon-location-outline"
         @click="() => $emit('location')"
+        :title="$t('centerAll')"
         ></el-button>
       </div>
     </div>
@@ -45,11 +46,23 @@ import wktParse from 'wellknown'
 
 function parseData (rawData) {
   try {
-    return JSON.parse(rawData)
+    return {
+      geodata: JSON.parse(rawData),
+      type: 'GeoJSON'
+    }
   } catch (err) {
-    return wktParse(rawData)
+    const wkt = wktParse(rawData)
+    if (!wkt) {
+      return null
+    }
+    return {
+      geodata: wkt,
+      type: 'WKT'
+    }
   }
 }
+
+const defaultColor = '#2ADA44'
 
 export default {
   components: {
@@ -57,7 +70,7 @@ export default {
   },
   data () {
     return {
-      color: '#600054',
+      color: defaultColor,
       textInput: ''
     }
   },
@@ -66,7 +79,7 @@ export default {
       if (this.color && this.color.length > 1) {
         return this.color
       }
-      return '#600054'
+      return defaultColor
     }
   },
   methods: {
@@ -98,7 +111,8 @@ export default {
         return
       }
       this.$emit('add', {
-        geodata: parsed,
+        geodata: parsed.geodata,
+        type: parsed.type,
         rawData: rawData,
         color: this.newColor
       })
