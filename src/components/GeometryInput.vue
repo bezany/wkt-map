@@ -19,7 +19,7 @@
       <el-input
       type="textarea"
       :autosize="{ minRows: 2, maxRows: 4}"
-      placeholder="Введтие WKT или GeoJSON"
+      :placeholder="$t('inputPlaceholder')"
       v-model="textInput">
       </el-input>
     </div>
@@ -27,7 +27,7 @@
       <el-button
       size="mini"
       @click="addFromTextInput"
-      >Добавить</el-button>
+      >{{$t('add')}}</el-button>
     </div>
   </div>
 </template>
@@ -66,7 +66,7 @@ export default {
     addFromTextInput () {
       if (!this.textInput) {
         this.$notify.error({
-          message: 'Введите данные!'
+          message: this.$t('notifyEmptyData')
         })
         return
       }
@@ -76,7 +76,7 @@ export default {
     fileAdded (text) {
       if (!text) {
         this.$notify.error({
-          message: 'Файл пуст!'
+          message: this.$t('notifyFileEmpty')
         })
         return
       }
@@ -86,7 +86,7 @@ export default {
       const parsed = parseData(rawData)
       if (!parsed) {
         this.$notify.error({
-          message: 'Ошибка парсинга! Требуется формат WKT или GeoJSON.'
+          message: this.$t('notifyParseError')
         })
         return
       }
@@ -99,7 +99,3 @@ export default {
   }
 }
 </script>
-
-<style>
-
-</style>

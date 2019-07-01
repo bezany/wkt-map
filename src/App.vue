@@ -3,7 +3,7 @@
     <el-container style="height: 100%; width: 100%;">
       <el-aside class="aside" width="200px">
         <div>
-          <h3>WKT & GeoJSON Viewer</h3>
+          <h3>{{$t('title')}}</h3>
           <GeometryInput
           @add="addGeometry"
           />
@@ -15,7 +15,10 @@
           @remove="removeField(index)"
           />
         </div>
-        <LangSelect />
+        <div>
+          <LangSelect />
+          <el-link href="https://github.com/bezany/wkt-map" target="_blank">source</el-link>
+        </div>
       </el-aside>
       <el-main class="main">
         <Map

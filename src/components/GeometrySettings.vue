@@ -10,13 +10,13 @@
     <el-checkbox
     :value="geometry.visible"
     @change="(value) => $emit('change-visible', value)"
-    >Показывать</el-checkbox>
+    >{{$t('visible')}}</el-checkbox>
     <el-button
     type="info"
     icon="el-icon-delete"
     size="mini"
     @click="() => $emit('remove')"
-    >Удалить</el-button>
+    >{{$t('remove')}}</el-button>
   </div>
 </template>
 
