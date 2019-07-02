@@ -2,8 +2,7 @@
   "name": "wkt-map",
   "version": "1.0.0",
   "description": "Map for show WKT",
-  "author": "***REMOVED*** <***REMOVED***>",
-  "private": true,
+  "author": "bezany <bezanyu@gmail.com>",
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
