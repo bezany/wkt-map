@@ -19,7 +19,8 @@ Vue.use(ElementUI, {
 const possibleLangs = Object.keys(messages)
 
 function detectLanguage () {
-  const langs = window.navigator.languages
+  const nav = window.navigator
+  const langs = nav.languages || (nav.userLanguage ? [nav.userLanguage] : [])
   const findLang = langs.find(lang => possibleLangs.indexOf(lang) >= 0)
   return findLang || 'en'
 }
