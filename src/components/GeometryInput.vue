@@ -62,7 +62,7 @@ function parseData (rawData) {
   }
 }
 
-const defaultColor = '#2ADA44'
+const defaultColor = '#C522B1'
 
 export default {
   components: {
