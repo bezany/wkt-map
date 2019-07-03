@@ -11,6 +11,7 @@
     "pages": "npm run build && rimraf docs/ && ncp dist/ docs/"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.4.4",
     "element-ui": "^2.8.2",
     "leaflet": "^1.5.1",
     "leaflet-measure": "^3.1.0",
